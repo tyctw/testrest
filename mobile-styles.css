@@ -1,237 +1,254 @@
 /* Mobile-specific styles */
 @media (max-width: 768px) {
-  .container {
-    width: 98%;
-    padding: 10px 5px;
-    border-radius: 15px;
-  }
-  
-  .header-content {
-    padding: 0.75rem;
-  }
-  
-  h1 {
-    font-size: 1.75rem;
-    margin: 1.5rem 0;
-  }
-  
-  h1::after {
-    width: 80px;
-  }
-  
-  .view-controls {
-    flex-direction: column;
-    gap: 10px;
-    padding: 0 10px;
+  :root {
+    --container-width: 100%;
   }
 
+  body {
+    font-size: 15px;
+  }
+
+  /* 頁首調整 */
+  .header-content {
+    padding: 0.75rem 1rem;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+  }
+
+  .logo span {
+    display: none;
+  }
+
+  .search-container {
+    max-width: none;
+  }
+
+  #searchInput {
+    padding: 0.625rem 1rem 0.625rem 2.25rem;
+    font-size: 0.9rem;
+  }
+
+  /* 主標題調整 */
+  h1 {
+    font-size: 1.5rem;
+    margin: 1.5rem 0;
+    padding: 0 1rem;
+  }
+
+  /* 視圖控制調整 */
+  .view-controls {
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem;
+    padding: 0;
+  }
+
+  .button-container {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .button {
+    flex: 1;
+    padding: 0.625rem;
+    font-size: 0.9rem;
+    justify-content: center;
+  }
+
+  .view-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 容器調整 */
+  .container {
+    margin: 1rem;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+  }
+
+  /* 表格調整 */
   .table-responsive {
+    margin: 0 -1rem;
+    padding: 0 1rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    position: relative;
-    width: 100%;
-    margin: 0 -1rem;
-    border-radius: 0;
-    box-shadow: none;
   }
-  
-  .table-responsive::after {
-    content: '← 左右滑動查看更多 →';
-    position: absolute;
-    bottom: -25px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 0.8em;
-    color: #666;
-    opacity: 0.8;
-  }
-  
+
   table {
-    min-width: 550px;
+    font-size: 0.9rem;
   }
-  
-  .data-summary {
-    padding: 15px 10px;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-  
-  .summary-card {
-    padding: 1rem;
-    min-height: 100px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  .summary-card h3 {
-    font-size: 0.875rem;
-    margin-top: 5px;
-  }
-  
-  .summary-card p {
-    font-size: 1.25rem;
-    margin: 5px 0;
-  }
-  
-  .summary-card i {
-    font-size: 1.5rem;
-  }
-  
-  .export-buttons {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 0 10px;
-  }
-  
-  .export-button, .print-button {
-    padding: 0.75rem;
-    font-size: 0.875rem;
-    flex: 1 0 auto;
-    min-width: 120px;
-    margin: 5px;
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .notification {
-    width: 90%;
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
-  }
-  
-  /* Better touch targets */
+
   th, td {
-    padding: 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.75rem 1rem;
+    white-space: nowrap;
   }
-  
-  .button, .view-button {
-    padding: 0.625rem 1rem;
-    font-size: 0.875rem;
-    min-width: 120px;
-  }
-  
-  .button i, .view-button i {
-    font-size: 1rem;
-  }
-  
+
   .mobile-swipe-hint {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
     padding: 0.75rem;
-    background: var(--background-secondary);
-    color: var(--text-secondary);
+    color: var(--text-light);
     font-size: 0.875rem;
-    margin: 1rem -1rem -1rem;
+    background: var(--background-secondary);
+    border-radius: var(--radius-sm);
+    margin: 1rem 0;
   }
-  
-  .mobile-swipe-hint i {
-    font-size: 1rem;
-    animation: swipeAnimation 1.5s infinite;
-  }
-  
-  @keyframes swipeAnimation {
-    0% {
-      transform: translateX(0);
-    }
-    50% {
-      transform: translateX(5px);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-  
+
+  /* 圖表調整 */
   .chart-view {
-    margin: 0 -1rem;
-    border-radius: 0;
     padding: 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
-  
+
+  /* 數據摘要調整 */
+  .data-summary {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 1.5rem 1rem;
+    padding: 0;
+  }
+
+  .summary-card {
+    padding: 1.25rem;
+  }
+
+  .summary-card i {
+    font-size: 1.75rem;
+  }
+
+  .summary-card h3 {
+    font-size: 0.9rem;
+  }
+
+  .summary-card p {
+    font-size: 1.25rem;
+  }
+
+  /* 頁尾調整 */
   footer {
     padding: 1.5rem 1rem;
     margin-top: 2rem;
   }
-  
+
+  .export-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .export-button, .print-button {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem;
+    font-size: 0.9rem;
+  }
+
   footer p {
     font-size: 0.875rem;
   }
+
+  /* 通知調整 */
+  .notification {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    width: auto;
+    font-size: 0.9rem;
+  }
 }
 
-@media (max-width: 480px) {
-  .button-container {
-    flex-wrap: wrap;
+/* 超小螢幕調整 */
+@media (max-width: 360px) {
+  body {
+    font-size: 14px;
   }
-  
-  .button, .view-button {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8125rem;
-    margin: 5px;
+
+  .header-content {
+    padding: 0.625rem 0.75rem;
   }
-  
-  .summary-card h3 {
-    font-size: 0.8em;
-  }
-  
-  .summary-card p {
-    font-size: 1.125rem;
-  }
-  
-  .summary-card i {
+
+  h1 {
     font-size: 1.25rem;
   }
-  
-  /* Stack footer buttons on very small screens */
-  .export-buttons {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .export-button, .print-button {
-    margin: 5px 0;
-    width: 100%;
-    padding: 0.625rem;
-    font-size: 0.8125rem;
-  }
-  
-  /* Full width search on focus */
-  .search-container.active {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    right: 0;
-    top: 0;
-    padding: 15px;
-    background: var(--header-color);
-    z-index: 1001;
-  }
-  
-  .search-container.active input {
-    width: 100%;
-  }
-}
 
-@media (max-height: 480px) and (orientation: landscape) {
-  .mobile-menu {
-    padding-top: 3rem;
+  .button {
+    padding: 0.5rem;
+    font-size: 0.8rem;
   }
 
-  .mobile-menu-header {
+  .container {
+    margin: 0.75rem;
+    padding: 0.75rem;
+  }
+
+  th, td {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .summary-card {
     padding: 1rem;
   }
 
-  .menu-category {
-    margin-bottom: 1rem;
+  .summary-card i {
+    font-size: 1.5rem;
   }
 
-  .mobile-menu a {
-    padding: 0.5rem 0.75rem;
+  .summary-card p {
+    font-size: 1.1rem;
+  }
+}
+
+/* 動畫效果 */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-fade-in {
+  animation: slideUp 0.3s ease forwards;
+}
+
+/* 觸控優化 */
+@media (hover: none) {
+  .button:hover,
+  .view-button:hover,
+  .export-button:hover,
+  .print-button:hover {
+    transform: none;
+  }
+
+  .button:active,
+  .view-button:active,
+  .export-button:active,
+  .print-button:active {
+    transform: scale(0.98);
+  }
+}
+
+/* 深色模式支援 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-primary: #ffffff;
+    --text-secondary: #a0aec0;
+    --text-light: #718096;
+    --background-primary: #1a202c;
+    --background-secondary: #2d3748;
+    --background-tertiary: #4a5568;
+  }
+
+  .mobile-swipe-hint {
+    background: var(--background-tertiary);
   }
 }
