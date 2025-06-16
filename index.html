@@ -1,0 +1,433 @@
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>桃園市高中職序位</title>
+  <meta name="description" content="桃園市高中職會考序位分析平台，提供最新普通科與職業類科升學資訊與排名數據。">
+  <meta name="keywords" content="桃園市高中,桃園市高職,會考序位,國中會考,升學資訊,桃園,分發序位,學校排名,TYCTW,普通科,職業類科">
+  <meta name="author" content="TYCTW">
+  <meta property="og:title" content="桃園市高中職序位 - 會考成績分析平台">
+  <meta property="og:description" content="提供桃園市各高中職的會考序位資料分析，協助國中畢業生選擇理想學校。">
+  <meta property="og:image" content="https://rcpett.vercel.app/logo.png">
+  <meta property="og:url" content="https://rcpett.vercel.app/">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://rcpett.vercel.app/">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="menu-styles.css">
+  <link rel="stylesheet" href="guide-styles.css">
+  <link rel="stylesheet" href="loading-animation.css">
+  <link rel="stylesheet" href="mobile-styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module" src="app.js" defer></script>
+  <script type="module" src="guide.js" defer></script>
+</head>
+<body>
+  <div id="loading" class="loader-container">
+    <div class="loader">
+      <div class="loader-ripple"></div>
+      <div class="loader-circle"></div>
+      <div class="loader-circle"></div>
+      <div class="loader-circle"></div>
+      <div class="loader-text">
+        <span>載</span>
+        <span>入</span>
+        <span>資</span>
+        <span>料</span>
+        <span>中</span>
+        <span>...</span>
+      </div>
+    </div>
+  </div>
+
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-chart-bar"></i>
+        TYCTW 會考分析
+      </div>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="搜尋學校..." />
+        <i class="fas fa-search search-icon"></i>
+      </div>
+      <button class="menu-toggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <button id="helpBtn" class="help-button">
+        <i class="fas fa-question-circle"></i>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu">
+    <button class="menu-close">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="mobile-menu-header">
+      <div class="logo">
+        <i class="fas fa-chart-bar"></i>
+        TYCTW 會考分析
+      </div>
+    </div>
+    
+    <div class="mobile-menu-scroll">
+      <div class="menu-category">
+        <div class="menu-category-title">主要功能</div>
+        <a href="https://sites.google.com/view/tyctw/">
+          <i class="fas fa-home"></i> 回到主網頁
+        </a>
+        <a href="https://tyctw.github.io/">
+          <i class="fas fa-chart-line"></i> 落點分析系統
+        </a>
+      </div>
+      
+      <div class="menu-category">
+        <div class="menu-category-title">資源與工具</div>
+        <a href="https://tyctw.github.io/Navigation/" target="_blank">
+          <i class="fas fa-info-circle"></i> 更多資訊
+        </a>
+        <a href="#" id="menuHelpBtn">
+          <i class="fas fa-question-circle"></i> 使用說明
+        </a>
+      </div>
+      
+      <div class="menu-category">
+        <div class="menu-category-title">資料匯出</div>
+        <a href="#" id="menuExportCSV">
+          <i class="fas fa-file-csv"></i> 匯出CSV
+        </a>
+        <a href="#" id="menuExportPDF">
+          <i class="fas fa-file-pdf"></i> 匯出PDF
+        </a>
+        <a href="#" id="menuPrintButton">
+          <i class="fas fa-print"></i> 列印資料
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <h1>
+    <i class="fas fa-school"></i>
+    桃園市高中職序位
+  </h1>
+
+  <div class="view-controls">
+    <div class="button-container">
+      <button id="normalBtn" class="button active">
+        <i class="fas fa-graduation-cap"></i> 普通科
+      </button>
+      <button id="vocationalBtn" class="button">
+        <i class="fas fa-tools"></i> 職業類科
+      </button>
+    </div>
+    <div class="view-toggle">
+      <button id="tableViewBtn" class="view-button active">
+        <i class="fas fa-table"></i> 表格檢視
+      </button>
+      <button id="chartViewBtn" class="view-button">
+        <i class="fas fa-chart-bar"></i> 圖表檢視
+      </button>
+    </div>
+  </div>
+
+  <div class="container table-view active" id="tableView">
+    <div class="table-responsive">
+      <table id="schoolTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable(0)">
+              <i class="fas fa-sort"></i> 學校名稱
+            </th>
+            <th onclick="sortTable(1)">
+              <i class="fas fa-sort"></i> 序位累積比率
+            </th>
+            <th onclick="sortTable(2)">
+              <i class="fas fa-sort"></i> 序位累積人數
+            </th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+        </tbody>
+      </table>
+    </div>
+    <div class="mobile-swipe-hint">
+      <i class="fas fa-chevron-left"></i>
+      左右滑動查看更多
+      <i class="fas fa-chevron-right"></i>
+    </div>
+  </div>
+
+  <div class="container chart-view" id="chartView">
+    <canvas id="schoolChart"></canvas>
+  </div>
+
+  <div class="data-summary">
+    <div class="summary-card">
+      <i class="fas fa-school"></i>
+      <h3>總學校數</h3>
+      <p id="totalSchools">0</p>
+    </div>
+    <div class="summary-card">
+      <i class="fas fa-users"></i>
+      <h3>平均序位人數</h3>
+      <p id="averageRank">0</p>
+    </div>
+    <div class="summary-card">
+      <i class="fas fa-percentage"></i>
+      <h3>平均比率</h3>
+      <p id="averageRate">0%</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="export-buttons">
+      <button id="exportCSV" class="export-button">
+        <i class="fas fa-file-csv"></i> 匯出CSV
+      </button>
+      <button id="exportPDF" class="export-button">
+        <i class="fas fa-file-pdf"></i> 匯出PDF
+      </button>
+      <button id="printButton" class="print-button">
+        <i class="fas fa-print"></i> 列印資料
+      </button>
+    </div>
+    <p>
+      <i class="far fa-copyright"></i> 2025 TYCTW桃園市高中普通科與職業類科序位. 版權所有。
+    </p>
+    <p>
+      <i class="fas fa-info-circle"></i> 以上資料僅供參考
+    </p>
+  </footer>
+
+  <div id="notification" class="notification">
+    <i class="fas fa-info-circle"></i>
+    <span id="notificationText"></span>
+  </div>
+
+  <div id="userGuideModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <div class="guide-header">
+        <i class="fas fa-book"></i>
+        <h2>使用說明</h2>
+      </div>
+      <div class="guide-tabs">
+        <button class="guide-tab-btn active" data-tab="basics">基本功能</button>
+        <button class="guide-tab-btn" data-tab="data">資料說明</button>
+        <button class="guide-tab-btn" data-tab="mobile">行動裝置</button>
+        <button class="guide-tab-btn" data-tab="export">匯出功能</button>
+      </div>
+      <div class="guide-sections-container">
+        <div class="guide-tab-content active" id="basics-tab">
+          <div class="guide-section">
+            <div class="guide-icon">
+              <i class="fas fa-search"></i>
+            </div>
+            <div class="guide-text">
+              <h3>快速搜尋</h3>
+              <p>使用頁面上方的搜尋框，輸入學校名稱即可快速找到相關資訊：</p>
+              <ul>
+                <li><i class="fas fa-keyboard"></i> 支援模糊搜尋</li>
+                <li><i class="fas fa-filter"></i> 即時過濾結果</li>
+                <li><i class="fas fa-history"></i> 搜尋結果即時更新</li>
+              </ul>
+              <div class="guide-demo">
+                <div class="search-demo">
+                  <input type="text" placeholder="輸入學校名稱..." disabled />
+                  <i class="fas fa-search"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section">
+            <div class="guide-icon">
+              <i class="fas fa-table"></i>
+            </div>
+            <div class="guide-text">
+              <h3>資料檢視模式</h3>
+              <p>提供兩種資料呈現方式，滿足不同需求：</p>
+              <ul>
+                <li><i class="fas fa-table"></i> <b>表格檢視：</b>詳細的數據資料，支援排序功能</li>
+                <li><i class="fas fa-chart-bar"></i> <b>圖表檢視：</b>視覺化呈現，直觀比較各校數據</li>
+              </ul>
+              <div class="guide-demo">
+                <div class="tab-demo">
+                  <button class="tab-demo-btn active"><i class="fas fa-table"></i> 表格檢視</button>
+                  <button class="tab-demo-btn"><i class="fas fa-chart-bar"></i> 圖表檢視</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-section">
+            <div class="guide-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="guide-text">
+              <h3>類科切換</h3>
+              <p>依照您的需求選擇查看不同類科的資料：</p>
+              <ul>
+                <li><i class="fas fa-graduation-cap"></i> <b>普通科：</b>高中普通科的序位資料</li>
+                <li><i class="fas fa-tools"></i> <b>職業類科：</b>高職各科別的序位資料</li>
+              </ul>
+              <div class="guide-demo">
+                <button class="demo-btn active"><i class="fas fa-graduation-cap"></i> 普通科</button>
+                <button class="demo-btn"><i class="fas fa-tools"></i> 職業類科</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="guide-tab-content" id="data-tab">
+          <div class="guide-section">
+            <div class="guide-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="guide-text">
+              <h3>序位資料解讀</h3>
+              <p>了解如何解讀各項數據指標：</p>
+              <div class="data-info-box">
+                <h4><i class="fas fa-percentage"></i> 序位累積比率</h4>
+                <p>代表該校在所有考生中的相對位置，數值越高表示入學門檻越高。</p>
+                <h4><i class="fas fa-users"></i> 序位累積人數</h4>
+                <p>顯示會考成績達到該校標準的學生總人數。</p>
+              </div>
+              <div class="guide-demo">
+                <div class="data-example">
+                  <div class="example-item">
+                    <span class="example-name">範例高中</span>
+                    <span class="example-rate">85%</span>
+                    <span class="example-rank">4,250人</span>
+                  </div>
+                  <div class="example-explanation">
+                    <p>解讀：有4,250名學生的會考成績達到或超過該校標準，位於全體考生的前85%。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="guide-tab-content" id="mobile-tab">
+          <div class="guide-section">
+            <div class="guide-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <div class="guide-text">
+              <h3>行動裝置使用技巧</h3>
+              <p>在手機或平板上使用時的特殊功能：</p>
+              <ul class="feature-list">
+                <li><i class="fas fa-arrows-alt-h"></i> 左右滑動查看完整表格</li>
+                <li><i class="fas fa-sync"></i> 雙指縮放調整圖表大小</li>
+                <li><i class="fas fa-hand-point-up"></i> 點擊圖表數據查看詳細資訊</li>
+              </ul>
+              <div class="mobile-demo">
+                <div class="phone-outline">
+                  <div class="phone-screen">
+                    <div class="phone-header">
+                      <span class="phone-title">TYCTW 會考分析</span>
+                      <i class="fas fa-bars"></i>
+                    </div>
+                    <div class="phone-content">
+                      <div class="swipe-indicator">
+                        <i class="fas fa-chevron-left"></i>
+                        <span>左右滑動查看更多</span>
+                        <i class="fas fa-chevron-right"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="guide-tab-content" id="export-tab">
+          <div class="guide-section">
+            <div class="guide-icon">
+              <i class="fas fa-file-export"></i>
+            </div>
+            <div class="guide-text">
+              <h3>資料匯出選項</h3>
+              <p>提供多種資料匯出格式，方便後續使用：</p>
+              <div class="export-options">
+                <div class="export-option">
+                  <div class="export-icon">
+                    <i class="fas fa-file-csv"></i>
+                  </div>
+                  <div class="export-info">
+                    <h4>CSV 格式</h4>
+                    <p>適合用Excel進行進階分析</p>
+                    <span class="export-tag">可編輯</span>
+                  </div>
+                </div>
+                <div class="export-option">
+                  <div class="export-icon">
+                    <i class="fas fa-file-pdf"></i>
+                  </div>
+                  <div class="export-info">
+                    <h4>PDF 格式</h4>
+                    <p>適合保存與分享</p>
+                    <span class="export-tag">高品質</span>
+                  </div>
+                </div>
+                <div class="export-option">
+                  <div class="export-icon">
+                    <i class="fas fa-print"></i>
+                  </div>
+                  <div class="export-info">
+                    <h4>列印功能</h4>
+                    <p>支援客製化列印選項</p>
+                    <span class="export-tag">可自訂</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="guide-footer">
+        <button class="guide-close-btn">我已了解</button>
+        <label class="dont-show-again">
+          <input type="checkbox" id="dontShowAgain">
+          <span>不再顯示此說明</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="seo-structured-data" aria-hidden="true">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "桃園市高中職序位分析平台",
+      "url": "https://rcpett.vercel.app/",
+      "description": "提供桃園市高中職普通科與職業類科的會考序位分析數據，協助國中學生了解各校分發概況。",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "tyctw.analyze@gmail.com",
+        "contactType": "customer service"
+      }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Dataset",
+      "name": "桃園市高中職序位數據",
+      "description": "桃園市各高中職的會考序位數據，包含序位累積人數、序位累積比率，以及近年來的分發趨勢分析，幫助學生與家長做出更好的升學選擇。",
+      "keywords": ["桃園市", "高中", "高職", "會考", "序位", "排名", "升學資訊"],
+      "creator": {
+        "@type": "Organization",
+        "name": "TYCTW"
+      },
+      "license": "https://creativecommons.org/licenses/by-nc/4.0/"
+    }
+    </script>
+  </div>
+
+</body>
+</html>
